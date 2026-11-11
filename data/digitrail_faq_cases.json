@@ -1,0 +1,1166 @@
+{
+  "document": {
+    "id": "DT-FAQ-001",
+    "title": "DigiTrail Known Issues FAQ",
+    "revision": "01",
+    "date": "05 November 2026",
+    "case_count": 52,
+    "audience": "IQC, stores, trainers, and the person standing at the PC"
+  },
+  "not_found_protocol": "Write the case if you guessed one, the screen, the exact sentence, the PR, the item code, the Kaynes Unique ID, the username, and the time. Add one sentence about what you already tried. A new issue is added here only after it has been seen once for real.",
+  "cases": [
+    {
+      "case_number": 1,
+      "case_id": "01",
+      "section": "Parts In",
+      "title": "The receipt or the invoice does not come onto the screen",
+      "screen": "Parts In, ERP Data Sync, Master Data",
+      "page": 6,
+      "exact_messages": [
+        "The fetch finishes and the PR is still missing",
+        "The fetch finishes, and the PR, item, or invoice line is still missing."
+      ],
+      "scenario": "A purchase receipt that ERP already has is requested. DigiTrail fetch runs, and the row is not on the screen.",
+      "what_you_see": "The fetch finishes, and the PR, item, or invoice line is still missing.",
+      "what_it_means": "DigiTrail shows the last successful copy it stored. A fetch that did not finish, a part that is not in master data, or an invoice line that was never created all look the same from the chair: the data is not there. The inward quantity of reels already captured is a different number from the receipt quantity. Changing 29,000 to 30,000 in ERP does not wipe reels that were already printed.",
+      "what_to_do": [
+        "1. Stay on one screen. Note the PR number and the item code before fetching again.",
+        "2. Run the receipt fetch once, wait until it finishes, then search that PR. A second click while the first fetch is still running does not add the missing row.",
+        "3. If the PR is there and the part is blank, open Master Data and fetch once. Fetch replaces the old master rows with the new download.",
+        "4. Open the invoice for that PR. The part needs its own invoice line before Parts In will accept it.",
+        "5. If the receipt quantity was edited in ERP, fetch again and read both numbers: receipt quantity is the ERP total, inward quantity is what DigiTrail has already labelled."
+      ],
+      "pass_when": "The PR opens with the item code, the receipt quantity, and the invoice line. Reels already labelled are still in the inward quantity.",
+      "escalate_when": "Every PR fails at the same moment, or a finished fetch still misses a PR that ERP shows for this company. Note the PR, the time, and the username, and call IT."
+    },
+    {
+      "case_number": 2,
+      "case_id": "02",
+      "section": "Parts In",
+      "title": "Invoice transaction not found for this part number",
+      "screen": "Parts In",
+      "page": 6,
+      "exact_messages": [
+        "Invoice transaction not found for this part number"
+      ],
+      "scenario": "The operator selects a part and Parts In stops before the camera or the manual form.",
+      "what_you_see": "Invoice transaction not found for this part number",
+      "what_it_means": "Parts In posts the reel against an invoice line. The message means that line does not exist yet for this part on this receipt. The label, the lot, and the camera are not the cause.",
+      "what_to_do": [
+        "1. Read the part number in the message and compare it with the invoice summary for that PR.",
+        "2. If the line is missing, fetch the receipt again and reopen the invoice.",
+        "3. If the invoice has the item code but a different manufacturer part number, pick the part number that is actually on the invoice line.",
+        "4. Return to Parts In only after that part is visible on the invoice."
+      ],
+      "pass_when": "Parts In opens the capture for that part, and the invoice summary shows the same part number.",
+      "escalate_when": "The invoice summary shows the part and Parts In still returns this message after one fresh fetch. Send IT the PR, the part number, and the invoice number."
+    },
+    {
+      "case_number": 3,
+      "case_id": "03",
+      "section": "Parts In",
+      "title": "Part number not found in master data",
+      "screen": "Parts In, old-stock upload, label print",
+      "page": 7,
+      "exact_messages": [
+        "Part number not found in master data",
+        "Part was not found in Master Data"
+      ],
+      "scenario": "A reel, a manual entry, or an old-stock row uses a manufacturer part number that Master Data does not hold.",
+      "what_you_see": "Part number not found in master data. The same fault is also shown as Part was not found in Master Data.",
+      "what_it_means": "DigiTrail will not invent a part. The template, the bin, the description, and the label all hang from that master row. A near match, a part number with the quantity glued onto it, or a new part that ERP has not sent yet all stop here.",
+      "what_to_do": [
+        "1. Copy the part number from the message, including every character.",
+        "2. Search Master Data for that exact value.",
+        "3. If it is missing, fetch Master Data once and search again.",
+        "4. If the scanned value has the quantity stuck to the part, the read joined two fields. Capture the label again with the part number and the quantity on separate lines, or type the part number in manual mode."
+      ],
+      "pass_when": "The part opens from Master Data, and the same capture continues.",
+      "escalate_when": "The part is visible in ERP for this company and is still absent after one master fetch. Send the exact part number to the master-data owner."
+    },
+    {
+      "case_number": 4,
+      "case_id": "04",
+      "section": "Parts In",
+      "title": "No template is mapped for this part",
+      "screen": "Parts In, template mapping",
+      "page": 7,
+      "exact_messages": [
+        "Template not found. Choose an action below.",
+        "Template Not associated for the PartNumber"
+      ],
+      "scenario": "The camera has a part number, and no label template is tied to it.",
+      "what_you_see": "Template not found. Choose an action below. Older screens say Template Not associated for the PartNumber.",
+      "what_it_means": "The template tells DigiTrail which words on that manufacturer's label are the part, the lot, the date code, the quantity, and the bin. Without it, a capture cannot be trusted, so the screen stops on purpose.",
+      "what_to_do": [
+        "1. Read the part number in the dialog.",
+        "2. Map an existing template when this label layout is already used by another part of the same make.",
+        "3. Create a template when the layout is new. Map the fields from a clear capture of that label.",
+        "4. Come back to the same Parts In reel. The receipt and the part should still be the ones you left."
+      ],
+      "pass_when": "The dialog closes, the part shows the template name, and the next capture fills the mapped fields.",
+      "escalate_when": "You mapped the template and the next capture of a clear label still leaves the part, lot, or quantity empty. Keep that label photo and the template name."
+    },
+    {
+      "case_number": 5,
+      "case_id": "05",
+      "section": "Parts In",
+      "title": "One item code has many part numbers, and the list shows only one",
+      "screen": "Parts In, manual capture",
+      "page": 8,
+      "exact_messages": [
+        "Only one part number is listed for the item"
+      ],
+      "scenario": "An item code has two manufacturer parts on the invoice, and the operator can select only one of them.",
+      "what_you_see": "The part-number list shows a single MPN even though the invoice has more than one for the same item code.",
+      "what_it_means": "The list must follow the invoice lines for that item, not the last part DigiTrail happened to store. Hiding the second part forces the reel onto the wrong MPN.",
+      "what_to_do": [
+        "1. Open the invoice summary and count the distinct part numbers on that item code.",
+        "2. Fetch the receipt once and reopen Parts In.",
+        "3. Open the part-number list again. Each invoice part for that item should be a separate choice.",
+        "4. Select the part printed on the reel in your hand, then continue."
+      ],
+      "pass_when": "Every part number on that item for this invoice can be selected, and the reel stores the one you chose.",
+      "escalate_when": "After one fresh fetch the list is still short of the invoice. Note the item code and both part numbers."
+    },
+    {
+      "case_number": 6,
+      "case_id": "06",
+      "section": "Parts In",
+      "title": "The capture is black, or the fields stay empty",
+      "screen": "Parts In camera",
+      "page": 8,
+      "exact_messages": [
+        "The capture is black or the fields are empty"
+      ],
+      "scenario": "The operator captures a reel and DigiTrail shows no usable label data.",
+      "what_you_see": "The picture is black or dark, or the form opens with blank part, lot, date, and quantity.",
+      "what_it_means": "The reader can only use the picture it was given. A black frame, a glare band across the lot, or a label that is half outside the frame produces an empty form. This is a capture fault, not a missing purchase receipt.",
+      "what_to_do": [
+        "1. Look at the picture on the screen before you accept it. You should be able to read the part and the lot yourself.",
+        "2. Fill the frame with the label. Keep the reel flat, kill the glare, and hold still until the focus is sharp.",
+        "3. Capture again. One sharp picture is the test.",
+        "4. If the picture on the screen is sharp and the fields are still empty, confirm a template is mapped for that part (case 04), then capture once more."
+      ],
+      "pass_when": "The same label fills part, lot, quantity, and date code from one sharp picture.",
+      "escalate_when": "A picture you can read is stored, the template is mapped, and the form is still empty. Send that picture and the part number."
+    },
+    {
+      "case_number": 7,
+      "case_id": "07",
+      "section": "Parts In",
+      "title": "Expiry date stays empty",
+      "screen": "Parts In confirmation, reel label",
+      "page": 9,
+      "exact_messages": [
+        "Expiry date is blank on the label"
+      ],
+      "scenario": "The label or the master row already carries a life, and the expiry cell on the reel is empty.",
+      "what_you_see": "The expiry field is blank on the confirmation and on the printed label.",
+      "what_it_means": "Expiry is calculated. DigiTrail needs a manufacturing date or a date code it understands, and a life from the part master. Either one missing leaves the cell empty. The value is not typed again at print time.",
+      "what_to_do": [
+        "1. Check the captured manufacturing date or date code. It has to be a real date, not a fragment.",
+        "2. Open the part in Master Data and confirm the shelf life or duration is filled.",
+        "3. Correct the empty one, then capture or confirm the reel again.",
+        "4. Look at the printed label. The expiry that shows on the confirmation is the expiry that must print."
+      ],
+      "pass_when": "Confirmation and the reel label show the same expiry date.",
+      "escalate_when": "Both the date and the life are present and the expiry cell is still empty after a new confirm. Note the part and the date code exactly as captured."
+    },
+    {
+      "case_number": 8,
+      "case_id": "08",
+      "section": "Parts In",
+      "title": "The label is read, and the values land in the wrong fields",
+      "screen": "Parts In confirmation",
+      "page": 9,
+      "exact_messages": [
+        "The label text is in the wrong box"
+      ],
+      "scenario": "A label is read in full, yet quantity, lot, or part sits in another box.",
+      "what_you_see": "The raw label text is correct on the photo, and the form shows that text against the wrong heading.",
+      "what_it_means": "The reader and the template are two steps. A good read with a bad map still looks like a bad read from the chair. The template field rules have to match the marks on this label, including GS1 markers such as 1P, 1T, 9D, and Q.",
+      "what_to_do": [
+        "1. Compare the confirmation with the label, one field at a time. Note which heading received which value.",
+        "2. Open the template for that part and correct only the fields that landed in the wrong place.",
+        "3. Capture the same label once more.",
+        "4. Accept the reel only when part, lot, quantity, and date each match the label."
+      ],
+      "pass_when": "One new capture fills the same four fields in the right boxes.",
+      "escalate_when": "The template was corrected and a clear recapture still swaps the same two fields. Keep the photo and the template name."
+    },
+    {
+      "case_number": 9,
+      "case_id": "09",
+      "section": "Parts In",
+      "title": "A date code or a week code will not go in",
+      "screen": "Parts In, manual date entry",
+      "page": 10,
+      "exact_messages": [
+        "The date code will not stay in the cell"
+      ],
+      "scenario": "The reel shows a week code, a YYWW code, or a date such as 20251114, and the form rejects it or shifts it.",
+      "what_you_see": "The date cell will not accept the code printed on the reel, or it saves a different day.",
+      "what_it_means": "DigiTrail stores a calendar date. It accepts a finished date, a week code it can place, and the shapes DD-MM-YYYY and YYYY-MM-DD. A half-typed date is ignored. A week code is stored as the week DigiTrail calculated.",
+      "what_to_do": [
+        "1. Type the whole code printed on the label, then leave the cell.",
+        "2. If the cell stays red, use the date form the template asks for, usually DD-MM-YYYY.",
+        "3. For a week code, check that the stored date falls inside that week before you print.",
+        "4. Expiry is calculated only after this date is accepted (case 07)."
+      ],
+      "pass_when": "The cell keeps a complete date, and a reprint shows that same date.",
+      "escalate_when": "The code on the label is complete and the cell will not keep it. Write down the code and the template field type."
+    },
+    {
+      "case_number": 10,
+      "case_id": "10",
+      "section": "Parts In",
+      "title": "Moving from AI capture to manual still asks for IQC",
+      "screen": "Parts In, mode switch",
+      "page": 10,
+      "exact_messages": [
+        "Manual switch still asks for IQC"
+      ],
+      "scenario": "AI capture was already done for this part, invoice, PR, and lot. The operator switches to manual for another reel of the same material and IQC is demanded again.",
+      "what_you_see": "The confirm box appears, and after you switch, the same reel still asks to be set aside for IQC.",
+      "what_it_means": "The switch warns you: audit is skipped for parts captured in manual mode. IQC is a separate question. IQC is asked again only when the invoice, the PR, the part, or the lot has changed. Repeating the same four values is the same inspection lot.",
+      "what_to_do": [
+        "1. Read the confirm line. It should say that audit is skipped for manual capture. Continue only if that is the reel you mean.",
+        "2. Enter the same invoice, PR, part, and lot that were used on the AI reel.",
+        "3. If those four match and the screen still sets the reel aside for IQC, stop. Do not raise a second inspection to get past the screen."
+      ],
+      "pass_when": "The manual reel is saved without a new IQC request, and it does not appear in Pending Audits.",
+      "escalate_when": "The four values match the earlier reel and IQC is still requested. Note all four values and both reel IDs."
+    },
+    {
+      "case_number": 11,
+      "case_id": "11",
+      "section": "Parts In",
+      "title": "A manual reel never reaches the store, or it still asks for audit",
+      "screen": "Parts In manual, Pending Audits, Pending Store",
+      "page": 11,
+      "exact_messages": [
+        "Manual reel is missing in the store, or still in audit"
+      ],
+      "scenario": "The team finished the reel in manual mode. Stores cannot see it, or audit is asking for a reel that manual mode should have closed.",
+      "what_you_see": "The manual reel is missing in Pending Store, or it is sitting in Pending Audits.",
+      "what_it_means": "Manual mode skips reel audit because a person typed the data and captured the reference image. The reel should still be created, printed, and sent to the store path. A manual reel that never reaches Pending Store cannot be binned later.",
+      "what_to_do": [
+        "1. Finish the manual form, including the reference image from the camera.",
+        "2. Confirm the reel and let the label print.",
+        "3. Open Pending Audits. This reel should not be in that list.",
+        "4. Open Pending Store for the same PR. The reel should be there with the other reels."
+      ],
+      "pass_when": "The manual reel is in Pending Store and absent from Pending Audits, and stores can scan it when the rest of the PR is ready.",
+      "escalate_when": "The reel exists on the Parts In summary and is missing in both Pending Audits and Pending Store. Note the Kaynes Unique ID."
+    },
+    {
+      "case_number": 12,
+      "case_id": "12",
+      "section": "Parts In",
+      "title": "AI capture jumps to the next step in about a second",
+      "screen": "Parts In, AI capture",
+      "page": 11,
+      "exact_messages": [
+        "AI capture moves on by itself"
+      ],
+      "scenario": "The operator needs a pause to compare the screen with the reel. The screen advances by itself.",
+      "what_you_see": "The confirmation flashes and the screen moves on before the operator can read the part, lot, and quantity.",
+      "what_it_means": "The pause is the check. A reel accepted by a timer, rather than by the operator, is how the wrong lot gets printed. The operator confirms, and only then does the label print.",
+      "what_to_do": [
+        "1. Read part, lot, quantity, and date against the reel while the confirmation is on screen.",
+        "2. Confirm only when they match. Leave the screen on the confirmation until you have read them.",
+        "3. If the screen moves on by itself, do not print another reel on top of an unread one. Note the reel ID already created and check it in the summary before you continue."
+      ],
+      "pass_when": "The confirmation stays until you accept it, and the label matches the values you read.",
+      "escalate_when": "The confirmation still closes on its own after you have let one reel sit. Record the time and the part."
+    },
+    {
+      "case_number": 13,
+      "case_id": "13",
+      "section": "Reel audit",
+      "title": "A correct reel is called a wrong reel",
+      "screen": "Reel Audit",
+      "page": 12,
+      "exact_messages": [
+        "Wrong reel, then correct after two or three scans"
+      ],
+      "scenario": "The auditor scans the reel the label was printed for. The first scan says wrong. The second or third scan says correct.",
+      "what_you_see": "Wrong reel, sometimes followed by a demand to remove the DigiTrail label. The same reel is then accepted on a later scan.",
+      "what_it_means": "Audit compares one picture that contains both labels: the manufacturer label and the DigiTrail label, on the same reel. A glare, a folded corner, or a frame that cuts off one label fails that comparison. A later, cleaner scan of the same reel then passes. One sharp scan is the decision.",
+      "what_to_do": [
+        "1. Place both labels flat in the same frame. You should read the DigiTrail ID and the manufacturer part without moving the reel.",
+        "2. Scan once.",
+        "3. If the message is wrong, look at the picture. If either label is cut off or shining, correct the picture and scan once more. That second scan is a new picture, not a vote.",
+        "4. If the picture is sharp and both labels are fully visible, and the message is still wrong, take the DigiTrail label off. Put it back on the reel it was printed for, and scan that pair once."
+      ],
+      "pass_when": "One sharp picture of both labels is accepted, and the reel leaves the pending-audit list.",
+      "escalate_when": "The same sharp picture fails twice. Stop. Write the Kaynes Unique ID and keep the picture."
+    },
+    {
+      "case_number": 14,
+      "case_id": "14",
+      "section": "Reel audit",
+      "title": "People do not know how many scans decide the reel",
+      "screen": "Reel Audit",
+      "page": 12,
+      "exact_messages": [
+        "How many scans are required"
+      ],
+      "scenario": "The rule was left unclear, so operators scan until the message they want appears.",
+      "what_you_see": "The floor asks whether two scans, or three, are required before the reel is correct or wrong.",
+      "what_it_means": "There is no count to reach. The rule is one readable picture of both labels. Repeating a bad picture does not improve the decision.",
+      "what_to_do": [
+        "1. Tell the auditor: one scan, both labels, then stop.",
+        "2. A fail with a bad picture gets one corrected scan.",
+        "3. A fail with a good picture stops the reel. It is not scanned again to average the result.",
+        "4. A pass ends the audit for that reel."
+      ],
+      "pass_when": "The auditor can say, for any reel, which single picture decided it.",
+      "escalate_when": "The floor is still scanning a reel three times as the normal method. Use the one-picture rule."
+    },
+    {
+      "case_number": 15,
+      "case_id": "15",
+      "section": "Reel audit",
+      "title": "Remove the DigiTrail label from this reel",
+      "screen": "Reel Audit",
+      "page": 13,
+      "exact_messages": [
+        "Remove the DigiTrail label from this reel immediately"
+      ],
+      "scenario": "Audit has decided the DigiTrail label and the manufacturer reel are not the pair that was printed.",
+      "what_you_see": "Remove the DigiTrail label from this reel immediately. Find the correct reel and re-apply the label.",
+      "what_it_means": "This is a stop. The label belongs to one reel. Leaving it on the wrong reel sends the wrong lot to the bin.",
+      "what_to_do": [
+        "1. Take the DigiTrail label off the reel in your hand.",
+        "2. Read the Kaynes Unique ID on that label.",
+        "3. Find the reel that was printed with that ID. The part, lot, and quantity on the manufacturer label must match the reel record.",
+        "4. Apply the label to that reel and audit once, with both labels in the frame."
+      ],
+      "pass_when": "The matching reel passes audit on one picture, and the other reel has no DigiTrail label on it.",
+      "escalate_when": "You cannot find a reel whose part and lot match the ID. Hold both the label and the reel, and call with the ID."
+    },
+    {
+      "case_number": 16,
+      "case_id": "16",
+      "section": "Reel audit",
+      "title": "Audit shows the old Unique ID",
+      "screen": "Pending Audits, audit screen, binning",
+      "page": 13,
+      "exact_messages": [
+        "Audit still shows Unique ID"
+      ],
+      "scenario": "Parts In created a Kaynes Unique ID. Audit and binning still present the previous ID.",
+      "what_you_see": "The column or the scan field still says Unique ID, and the value is the old internal number.",
+      "what_it_means": "The floor uses the Kaynes Unique ID on the label, in audit, and in binning. The old Unique ID stays on the reel record so older stock can still be traced. It is not the ID the auditor or the store scans.",
+      "what_to_do": [
+        "1. Read the ID printed on the DigiTrail label. That is the Kaynes Unique ID.",
+        "2. Open Pending Audits and Pending Store. The ID on the row should be that same value.",
+        "3. Scan that printed value.",
+        "4. If a screen still demands the old Unique ID, use the printed Kaynes Unique ID once. If it is refused, stop."
+      ],
+      "pass_when": "Audit and binning accept the ID that is printed on the label.",
+      "escalate_when": "The printed ID is refused and the screen names only the old Unique ID. Note both values."
+    },
+    {
+      "case_number": 17,
+      "case_id": "17",
+      "section": "Reel audit",
+      "title": "Pending audits and completed audits are both empty",
+      "screen": "Pending Audits",
+      "page": 14,
+      "exact_messages": [
+        "Pending and completed audit lists are both empty"
+      ],
+      "scenario": "The auditor opens the list to start work and it is blank on both tabs.",
+      "what_you_see": "Reels were just printed, and neither the pending list nor the completed list shows them.",
+      "what_it_means": "A reel that has been printed and not audited belongs on the pending list. A reel that passed belongs on the completed list. An empty pair means the screen is not reading the reel records. It does not mean the work is finished.",
+      "what_to_do": [
+        "1. Search by the PR number and by the Kaynes Unique ID printed on the label.",
+        "2. Confirm the label really printed and the reel is on the Parts In summary.",
+        "3. Refresh the audit list once.",
+        "4. If the summary has the reel and both audit lists do not, stop and hand over the PR and the ID."
+      ],
+      "pass_when": "The new reel is on the pending list, or on the completed list after a real audit pass.",
+      "escalate_when": "Search by the printed ID finds nothing on either list while Parts In shows the reel."
+    },
+    {
+      "case_number": 18,
+      "case_id": "18",
+      "section": "Manual mode and IQC",
+      "title": "Manual mode is on the wrong people's screens",
+      "screen": "Parts In mode switch",
+      "page": 14,
+      "exact_messages": [
+        "Manual mode is visible to the wrong role"
+      ],
+      "scenario": "Manual capture has to be limited to named roles.",
+      "what_you_see": "Operators who should not type a reel can see Manual mode, or an authorised person cannot see it.",
+      "what_it_means": "Manual mode skips audit, so it is an authorised job, not a shortcut on every login. The role controls the switch. Sharing a password to reach it breaks the username stored against the reel.",
+      "what_to_do": [
+        "1. Sign in as the person who will own the reel.",
+        "2. If Manual is visible and this role should not have it, leave it unused and tell the role owner.",
+        "3. If the authorised person cannot see Manual, check the role assigned to that username. The switch follows the role, not the person standing at the PC."
+      ],
+      "pass_when": "Only the authorised role sees Manual mode, and the reel stored from it carries that username.",
+      "escalate_when": "The role is correct and the switch is still wrong after a fresh sign-in. Note the username and the role name."
+    },
+    {
+      "case_number": 19,
+      "case_id": "19",
+      "section": "Manual mode and IQC",
+      "title": "Manual mode has no reference picture, or it offers a file upload",
+      "screen": "Parts In, manual",
+      "page": 15,
+      "exact_messages": [
+        "Reference image skipped, or a file upload is offered"
+      ],
+      "scenario": "A manual reel is being saved without a picture of the spool taken at that moment.",
+      "what_you_see": "The reference image can be skipped, or the screen lets the operator upload a file from the PC.",
+      "what_it_means": "The reference image is the evidence that replaces audit. It has to be captured from the camera on this screen, at the time of the reel. A file from the desktop can be any old picture, so the upload path is not used.",
+      "what_to_do": [
+        "1. Open the camera on the manual screen. The frame should show the spool and its manufacturer label.",
+        "2. Capture. Confirm the picture is the spool in front of you.",
+        "3. Save the reel only after the picture is attached.",
+        "4. If the only control is an upload from disk, do not use it. Capture from the camera or stop."
+      ],
+      "pass_when": "The stored reel has a camera picture of that spool, and there was no way to finish without it.",
+      "escalate_when": "The reel saves with no picture, or the only picture path is a file upload. Note the reel ID."
+    },
+    {
+      "case_number": 20,
+      "case_id": "20",
+      "section": "Manual mode and IQC",
+      "title": "A manual IQC reel cannot be told apart, and no name is stored",
+      "screen": "IQC list, reel record, reports",
+      "page": 15,
+      "exact_messages": [
+        "Manual IQC has no username"
+      ],
+      "scenario": "Quality asks who released a manual reel, and the record does not say.",
+      "what_you_see": "A reel inspected in manual mode looks the same as a camera reel, or the user field is blank.",
+      "what_it_means": "Manual IQC has to be visible on the reel and on the screens that show it. The username of the person signed in at that moment is the name that is stored.",
+      "what_to_do": [
+        "1. Finish the manual IQC while signed in as the inspector.",
+        "2. Open the reel. It should be marked as manual, and the user field should be the signed-in name.",
+        "3. Check the same two facts on the list that is actually reviewed, not only on the capture screen."
+      ],
+      "pass_when": "A reviewer can point at the reel and say it was manual, and can read the username, without opening a log file.",
+      "escalate_when": "The reel is saved and either the manual mark or the username is missing. Note the reel ID and the person who was signed in."
+    },
+    {
+      "case_number": 21,
+      "case_id": "21",
+      "section": "Manual mode and IQC",
+      "title": "An IQC-pending receipt shows under Stores pending",
+      "screen": "Receipt status, Pending Store",
+      "page": 16,
+      "exact_messages": [
+        "IQC pending receipt sits in stores pending"
+      ],
+      "scenario": "Status was expected to stay on IQC pending. The board shows stores pending instead.",
+      "what_you_see": "The receipt is still waiting for IQC, and stores already has it as pending binning.",
+      "what_it_means": "Stores pending means IQC is finished and the reels may be binned. IQC pending means inspection is not finished. A receipt cannot be both.",
+      "what_to_do": [
+        "1. Open the receipt and read the status of each reel, not only the PR header.",
+        "2. If any reel is still IQC pending or audit pending, stores leaves the PR alone.",
+        "3. Refresh the store list after IQC is actually completed.",
+        "4. Bin only when the receipt is no longer on an IQC-pending status."
+      ],
+      "pass_when": "The receipt stays off the store board until IQC is complete, then it appears once, as ready for stores.",
+      "escalate_when": "A reel with IQC still open can be scanned into a bin. Stop and note the PR."
+    },
+    {
+      "case_number": 22,
+      "case_id": "22",
+      "section": "Manual mode and IQC",
+      "title": "The quality template shows the wrong parameters",
+      "screen": "IQC, quality inspection template",
+      "page": 16,
+      "exact_messages": [
+        "Connector-1 parameters do not match ERP"
+      ],
+      "scenario": "The inspector opens IQC for an item whose ERP template is Connector-1. The parameter list does not match the template the quality owner maintains.",
+      "what_you_see": "Connector-1, or another named template, shows parameters that are not on that item, or it shows none.",
+      "what_it_means": "DigiTrail does not keep its own list of Connector-1 checks. It shows the parameters on the quality inspection template linked to that item in ERP. Sampling quantity on the ERP push is the count of readings actually taken.",
+      "what_to_do": [
+        "1. Note the item code and the template name on the IQC screen.",
+        "2. Ask the quality owner to open that same template in ERP and read the parameter names.",
+        "3. The DigiTrail list should be those names. Fetch the template again if ERP was corrected.",
+        "4. Enter a reading for each parameter that applies. A push with no readings returns sampling_qty must be greater than zero (case 39)."
+      ],
+      "pass_when": "The inspector sees the ERP template's parameters for that item, and each required reading is filled before the push.",
+      "escalate_when": "ERP shows parameters for that item and DigiTrail, after one fresh fetch, shows a different set. Note the item code and the template name."
+    },
+    {
+      "case_number": 23,
+      "case_id": "23",
+      "section": "Binning and stores",
+      "title": "This spool does not belong to the selected bin",
+      "screen": "Pending Store, scan bin",
+      "page": 17,
+      "exact_messages": [
+        "This spool does not belong to the selected bin",
+        "Spool successfully added to the bin"
+      ],
+      "scenario": "The store scans a spool into a bin and the line turns red with this message.",
+      "what_you_see": "This spool does not belong to the selected bin",
+      "what_it_means": "The bin on the spool is compared with the bin on that part's master location. The word BIN is not hard-coded. A mismatch, a spool from another PR, or a master bin that is wrong all use this same sentence. The success line is green: Spool successfully added to the bin.",
+      "what_to_do": [
+        "1. Read the bin on the spool and the bin you opened. They should be the same location.",
+        "2. If they differ, open the bin printed on the spool and scan once.",
+        "3. If they match and the message stays, open Master Data for that part and read the bin stored there. One bin only, such as A-01-03.",
+        "4. Correct the master bin if it is the wrong location, then scan the spool once more."
+      ],
+      "pass_when": "The green line appears: Spool successfully added to the bin.",
+      "escalate_when": "The spool bin, the open bin, and the master bin are the same, and the red line remains. A rejected reel can also fall through to this sentence. Check case 28 before you treat it as a location fault."
+    },
+    {
+      "case_number": 24,
+      "case_id": "24",
+      "section": "Binning and stores",
+      "title": "Binning is locked because audit is not done",
+      "screen": "Pending Store",
+      "page": 17,
+      "exact_messages": [
+        "Binning is locked. Audit is not done for",
+        "Audit is not done for"
+      ],
+      "scenario": "Stores scans any spool of a PR while one spool of that PR is still in audit.",
+      "what_you_see": "Binning is locked for receipt {PR}. Audit is not done for: {reel IDs}.",
+      "what_it_means": "The lock is for the whole receipt, not for the one pending reel. One open audit holds every spool of that PR. The pending IDs are listed in the message. Manual-mode reels are not in that list, because manual mode skips audit.",
+      "what_to_do": [
+        "1. Read the IDs in the message. Those are the reels still to audit.",
+        "2. Finish audit for each of them, one picture each (case 13).",
+        "3. Return to the same bin and start the scan again.",
+        "4. Scan the spools. The lock should be gone for this PR."
+      ],
+      "pass_when": "A spool of that PR scans with the green success line, and no audit ID for that PR remains in the message.",
+      "escalate_when": "Every ID named in the message is already on the completed-audit list, and the lock remains. Note the PR and those IDs."
+    },
+    {
+      "case_number": 25,
+      "case_id": "25",
+      "section": "Binning and stores",
+      "title": "Binning is locked because parts-in is not finished",
+      "screen": "Pending Store",
+      "page": 18,
+      "exact_messages": [
+        "Binning is locked. Parts-in is not finished for"
+      ],
+      "scenario": "The PR has several parts or several reels. One reel was offered to the bin while another item on the same PR has not been through Parts In.",
+      "what_you_see": "Binning is locked for receipt {PR}. Parts-in is not finished for {item codes}.",
+      "what_it_means": "Stores cannot close a receipt in pieces when sibling reels do not exist yet. A shared physical bin with some other part does not unlock this PR.",
+      "what_to_do": [
+        "1. Read the item codes in the message.",
+        "2. Finish Parts In for each of those items, for the full receipt quantity.",
+        "3. Complete audit where the reel was not done in manual mode.",
+        "4. Only then scan into the bin."
+      ],
+      "pass_when": "The lock message no longer names those item codes, and a spool of the PR can be added.",
+      "escalate_when": "Parts In for every named item is complete and the lock remains. Note the PR and the item codes."
+    },
+    {
+      "case_number": 26,
+      "case_id": "26",
+      "section": "Binning and stores",
+      "title": "The reel shows a lock, and the scan will not take it",
+      "screen": "Pending Store",
+      "page": 18,
+      "exact_messages": [
+        "Locked, or still on IQC hold",
+        "This spool is still on IQC hold. Complete IQC before binning."
+      ],
+      "scenario": "The spool is visible, and it still cannot be binned.",
+      "what_you_see": "The row is marked Locked. On scan: This spool is still on IQC hold. Complete IQC before binning.",
+      "what_it_means": "Visible and open are different. A reel with audit pending or IQC still open stays on the list so nobody thinks it was lost, and the scan refuses it.",
+      "what_to_do": [
+        "1. Read the row. Locked means audit or IQC is open for that reel or its PR.",
+        "2. Complete the named step.",
+        "3. Refresh Pending Store. The lock mark should leave that reel.",
+        "4. Scan once."
+      ],
+      "pass_when": "The reel shows Pending or Completed rather than Locked, and the scan follows case 23.",
+      "escalate_when": "The reel's audit and IQC are both closed and the lock mark remains after a refresh."
+    },
+    {
+      "case_number": 27,
+      "case_id": "27",
+      "section": "Binning and stores",
+      "title": "The binning steps are out of order",
+      "screen": "Pending Store, scan bin",
+      "page": 19,
+      "exact_messages": [
+        "Start, stop, comment, and push are out of order"
+      ],
+      "scenario": "A fixed order keeps a half-scanned bin from being pushed.",
+      "what_you_see": "People scan before Start, or they push to ERP before a comment, or Stop never appears.",
+      "what_it_means": "The order is the control. Start opens the scan. The spools are scanned only inside that session. Stop ends the session. The comment is entered after Stop. ERP is pushed after the comment.",
+      "what_to_do": [
+        "1. Open Scan Bin for the location.",
+        "2. Click Start Scan.",
+        "3. Scan each spool that belongs in this bin. Read the green or red line after every scan.",
+        "4. Click Stop when the spools for this session are done.",
+        "5. Enter the comment. Then push."
+      ],
+      "pass_when": "The session has a start, the spools, a stop, a comment, and only then a push.",
+      "escalate_when": "Stop or the comment box is missing, so a completed bin cannot record a comment. Note the bin and the PR."
+    },
+    {
+      "case_number": 28,
+      "case_id": "28",
+      "section": "Binning and stores",
+      "title": "A rejected spool is on the binning bench",
+      "screen": "IQC result, Pending Store, ERP Data Sync",
+      "page": 19,
+      "exact_messages": [
+        "Rejected spool on the binning bench"
+      ],
+      "scenario": "One or more spools on the PR were rejected. The rest of the receipt may be fit to store.",
+      "what_you_see": "The spool failed IQC. Stores is asked to bin it, or the scan answers with the ordinary wrong-bin line.",
+      "what_it_means": "A rejected spool is not binned. The receipt should not sit forever as binning pending because of that spool. The rejected spool goes forward as a comment and a status push to ERP, without a bin location. The fit spools follow the normal bin path.",
+      "what_to_do": [
+        "1. Confirm the IQC result on that Kaynes Unique ID is Rejected.",
+        "2. Keep the spool out of the bin.",
+        "3. Enter the comment for the rejection.",
+        "4. Push the status and the comment to ERP from ERP Data Sync.",
+        "5. Bin only the spools that passed."
+      ],
+      "pass_when": "The rejected ID is not in a bin. ERP has the comment and the rejected status. Passed spools of the same PR can still be binned.",
+      "escalate_when": "The rejected spool is accepted into a bin, or there is no place to comment and push it. Hold the spool and note the ID. The message you want on a rejected scan is that this is rejected material and binning cannot be performed."
+    },
+    {
+      "case_number": 29,
+      "case_id": "29",
+      "section": "Binning and stores",
+      "title": "Binned By is empty",
+      "screen": "Pending Store",
+      "page": 20,
+      "exact_messages": [
+        "Binned By is blank"
+      ],
+      "scenario": "Someone asks who binned a spool and when, and the screen has no name.",
+      "what_you_see": "The Binned By column is missing, or it is blank after a spool was binned.",
+      "what_it_means": "The name is the user who was signed in when the spool was added to the bin. The time is stored with it. A blank name means the spool was not binned through this screen, or the session had no user.",
+      "what_to_do": [
+        "1. Bin the next spool while signed in as the store user.",
+        "2. Open Pending Store and show Binned By and the binned time for that spool.",
+        "3. A spool binned today should show both."
+      ],
+      "pass_when": "Today's spool shows the signed-in name and a time.",
+      "escalate_when": "A spool just added shows neither a name nor a time. Note the Kaynes Unique ID."
+    },
+    {
+      "case_number": 30,
+      "case_id": "30",
+      "section": "Binning and stores",
+      "title": "The comment never appears on ERP Data Sync",
+      "screen": "ERP Data Sync",
+      "page": 20,
+      "exact_messages": [
+        "Comments column empty on ERP Data Sync"
+      ],
+      "scenario": "Stores typed a comment at binning. ERP Data Sync does not show it.",
+      "what_you_see": "The Comments column is empty, or it cannot be edited, or Push is not available to the person who should send it.",
+      "what_it_means": "The comment that ERP receives is the comment stored on the binning session and shown in the Comments column. Authorised users can correct the comment on this screen and then push.",
+      "what_to_do": [
+        "1. Finish case 27 so the comment is entered after Stop.",
+        "2. Open ERP Data Sync for that PR. Read the Comments column.",
+        "3. If the wording is wrong, edit it here and save before the push.",
+        "4. Push after the comment reads the way ERP should store it."
+      ],
+      "pass_when": "ERP Data Sync shows the comment, and the push is sent with that text.",
+      "escalate_when": "The comment was entered after Stop and the column is still empty after a refresh. Note the PR."
+    },
+    {
+      "case_number": 31,
+      "case_id": "31",
+      "section": "Labels and IDs",
+      "title": "The label prints the wrong ID",
+      "screen": "Label setup, Parts In, audit, binning",
+      "page": 21,
+      "exact_messages": [
+        "The sticker ID is not the Kaynes Unique ID"
+      ],
+      "scenario": "The new ID is the one the floor uses, and the old ID must remain on the record.",
+      "what_you_see": "The sticker shows the old Unique ID, or audit asks for an ID that is not on the sticker.",
+      "what_it_means": "Print, scan, audit, and bin the Kaynes Unique ID. Keep the old Unique ID stored against the same reel. In label setup, the identity field on the sticker is Kaynes Unique ID.",
+      "what_to_do": [
+        "1. Open the label template and confirm the identity field is Kaynes Unique ID.",
+        "2. Print one reel.",
+        "3. Read the ID on the paper. Use that exact value in audit and in binning.",
+        "4. Open the reel record if you need the old Unique ID. It stays there. It is not retyped onto the label."
+      ],
+      "pass_when": "Paper, audit, and binning all show one ID, the Kaynes Unique ID, and the record still has the old ID beside it.",
+      "escalate_when": "The template field is Kaynes Unique ID and the paper prints a different value. Keep that label."
+    },
+    {
+      "case_number": 32,
+      "case_id": "32",
+      "section": "Labels and IDs",
+      "title": "The batch number has the lot number inside it",
+      "screen": "ERP Data Sync, label, reel record",
+      "page": 21,
+      "exact_messages": [
+        "Batch number contains $$"
+      ],
+      "scenario": "Batch must be 2026-132509-1. Lot number is 2026-132509-1$$2. The part number must also be on the line.",
+      "what_you_see": "Batch number looks like 2026-132509-1$$2, the same shape as the lot.",
+      "what_it_means": "Batch and lot are neighbours, not copies. The batch has no $$ reel counter. The lot keeps the $$ and the reel number. The part number has to travel on the same ERP line.",
+      "what_to_do": [
+        "1. Read three fields on the row: batch, lot, part number.",
+        "2. Batch has no $$ in it. Lot is the batch plus $$ and the reel count.",
+        "3. Part number is the manufacturer part, not a blank.",
+        "4. If batch contains $$, do not push that line. Correct the batch to the form without $$, confirm the part number, then push."
+      ],
+      "pass_when": "Batch is 2026-132509-1, lot is 2026-132509-1$$2 or the matching reel, and the part number is visible.",
+      "escalate_when": "You correct the batch and the next push writes the $$ value back into the batch. Note the PR and stop the push."
+    },
+    {
+      "case_number": 33,
+      "case_id": "33",
+      "section": "Labels and IDs",
+      "title": "The sticker does not show 1 of N",
+      "screen": "Reel label, field REELSEQUENCENO",
+      "page": 22,
+      "exact_messages": [
+        "Spool count is not 1/N"
+      ],
+      "scenario": "A receipt of 25,000 with a reel quantity of 5,000 should print 1/5, then 2/5, up to 5/5.",
+      "what_you_see": "The spool count is missing, or it shows 1/1 on a receipt that has many reels.",
+      "what_it_means": "The total is the receipt quantity divided by the quantity on one reel. DigiTrail prints the reel's place in that total. It can do this only when both quantities are known.",
+      "what_to_do": [
+        "1. Read the receipt quantity and the quantity on this reel.",
+        "2. Divide. 25,000 / 5,000 is 5. The label should say 1/5 for the first reel of that receipt.",
+        "3. The next reel of the same receipt prints 2/5. The denominator stays 5.",
+        "4. If the quantity on the reel is not the pack quantity the receipt was planned with, fix the quantity before you judge the fraction."
+      ],
+      "pass_when": "Each reel of the receipt prints n/N, and N equals receipt quantity divided by reel quantity.",
+      "escalate_when": "Both quantities are right and the fraction is wrong or blank. Note the PR, the reel quantity, and the fraction that printed."
+    },
+    {
+      "case_number": 34,
+      "case_id": "34",
+      "section": "Labels and IDs",
+      "title": "An old-stock row disappears on upload",
+      "screen": "Old-stock upload",
+      "page": 22,
+      "exact_messages": [
+        "Old-stock row not imported, or the ID changed"
+      ],
+      "scenario": "The Excel of existing stock loses rows, or DigiTrail rewrites the Unique ID, especially an ID that contains $$ or a suffix such as 15S1.",
+      "what_you_see": "Rows not imported. A date such as 8/18/2026 is named, or the Unique ID in the file is not the Unique ID that was stored.",
+      "what_it_means": "The upload keeps the Unique ID exactly as the cell is typed, including hyphens and a suffix. A date may be YYYY-MM-DD, DD/MM/YYYY, or M/D/YYYY. The part number must already be in Master Data. The bin cell is one bin. Each Unique ID can be imported once.",
+      "what_to_do": [
+        "1. Read the error list. It names the row and the reason.",
+        "2. For a missing part, load that part into Master Data first (case 03), then upload again.",
+        "3. Leave the Unique ID cell exactly as the old label. Do not let the sheet turn it into a date or a number.",
+        "4. Use one bin in the location cell.",
+        "5. Upload once. A second upload of the same Unique ID is a duplicate, not a correction."
+      ],
+      "pass_when": "The row is in DigiTrail with the same Unique ID that was in the sheet, and the error list does not name it.",
+      "escalate_when": "The error list is empty and the ID stored is different from the cell. Stop and keep the sheet."
+    },
+    {
+      "case_number": 35,
+      "case_id": "35",
+      "section": "Labels and IDs",
+      "title": "Reprint invents a new Unique ID",
+      "screen": "Reprint",
+      "page": 23,
+      "exact_messages": [
+        "Reprint changed the Unique ID"
+      ],
+      "scenario": "Stores reprints a label for an uploaded reel and the paper does not match the reel.",
+      "what_you_see": "The reprinted label shows a new ID, or the $$ reel number has changed, or the ID is cut short.",
+      "what_it_means": "Reprint prints the Unique ID already stored on that reel. It does not allocate a new one. Hyphens stay. A long ID is not trimmed by dropping the end.",
+      "what_to_do": [
+        "1. Open the reel and read the stored Unique ID.",
+        "2. Reprint that reel.",
+        "3. Compare the paper with the stored ID, character for character, including $$ and any suffix.",
+        "4. If they differ, do not stick the new paper onto the reel."
+      ],
+      "pass_when": "The paper and the stored ID are the same string.",
+      "escalate_when": "They differ. Keep both and note the reel."
+    },
+    {
+      "case_number": 36,
+      "case_id": "36",
+      "section": "Labels and IDs",
+      "title": "The printer will not connect",
+      "screen": "Parts In, label setup, the printer icon",
+      "page": 23,
+      "exact_messages": [
+        "Printer is not connected, or the stream is locked",
+        "Printer is not connected. Please connect the printer first.",
+        "Cannot create writer when WritableStream is locked."
+      ],
+      "scenario": "The operator asks for a label and the browser reports the printer missing, or the printer stream is already open.",
+      "what_you_see": "Printer is not connected. Please connect the printer first. A second fault: Cannot create writer when WritableStream is locked.",
+      "what_it_means": "DigiTrail prints through the printer the browser is holding. Connect once from the printer icon, then print. Opening a second writer on a stream that is already held produces the locked-stream message.",
+      "what_to_do": [
+        "1. Click the printer icon and connect the label printer. Wait until the screen says the printer is ready.",
+        "2. Print one test label from label setup.",
+        "3. If the stream-locked message appears, close the extra print dialog, connect once, and print once.",
+        "4. Keep a single browser tab on that printer connection."
+      ],
+      "pass_when": "One test label comes out, and Parts In no longer says the printer is disconnected.",
+      "escalate_when": "The icon says ready and the locked-stream message returns on every single print. Note the PC and the printer name."
+    },
+    {
+      "case_number": 37,
+      "case_id": "37",
+      "section": "Labels and IDs",
+      "title": "The screen says the label printed, and no paper comes out",
+      "screen": "Parts In, manual print, test print",
+      "page": 24,
+      "exact_messages": [
+        "Label printed, and no paper. Or bypassing print",
+        "Printer offline: Bypassing print (Manual Mode)"
+      ],
+      "scenario": "The operator believes the reel is labelled because the screen said so.",
+      "what_you_see": "A success toast says the label was printed. The printer is silent. Manual mode may also say Printer offline: Bypassing print (Manual Mode).",
+      "what_it_means": "The toast means DigiTrail handed the job to the printer connection. It does not prove paper moved. Manual mode will say it is bypassing print when the printer is offline, and that means there is no label. Template 1 uses the 80 by 60 layout.",
+      "what_to_do": [
+        "1. Read the exact toast. Bypassing print means there is no label. Connect the printer and print again.",
+        "2. If it said printed, look at the printer queue on that PC before you capture the next reel.",
+        "3. For a template 1 test, set 80 by 60, save, and print one test.",
+        "4. Stick a label only when you are holding the paper."
+      ],
+      "pass_when": "You have the paper in hand and the values match the reel on the screen.",
+      "escalate_when": "The queue says the job left the PC and the printer never feeds a label. Call the printer owner. Do not recapture the reel to force paper."
+    },
+    {
+      "case_number": 38,
+      "case_id": "38",
+      "section": "Labels and IDs",
+      "title": "An underscore is printed on the sticker",
+      "screen": "Printed label",
+      "page": 24,
+      "exact_messages": [
+        "A stray underscore on the sticker"
+      ],
+      "scenario": "The label art has a character the data does not contain.",
+      "what_you_see": "A field shows a stray underscore that is not on the reel data.",
+      "what_it_means": "What prints is the field value plus the fixed text in the label template. An underscore that is not in the part, the lot, or the ID is coming from the template artwork or from an empty field the template still draws. IQC status on the label is Accepted or Rejected.",
+      "what_to_do": [
+        "1. Compare the paper with the reel record, field by field.",
+        "2. Note which printed word is not in the record. That word is template text.",
+        "3. Edit the template and remove the stray character. Save and print one test.",
+        "4. Set IQC status text from Accepted or Rejected only."
+      ],
+      "pass_when": "The test label contains only values that are on the reel, plus the fixed headings you meant to print.",
+      "escalate_when": "The template no longer contains the underscore and a new test still prints it. Keep the test label and the template name."
+    },
+    {
+      "case_number": 39,
+      "case_id": "39",
+      "section": "ERP push",
+      "title": "sampling_qty must be greater than zero",
+      "screen": "ERP Data Sync, push",
+      "page": 25,
+      "exact_messages": [
+        "sampling_qty must be greater than zero"
+      ],
+      "scenario": "The push to ERP is refused, often twice in the same message, once for each empty batch.",
+      "what_you_see": "sampling_qty must be greater than zero",
+      "what_it_means": "ERP wants the number of pieces actually inspected. DigiTrail sends the count of IQC readings on that batch. A batch with no readings sends zero, and ERP rejects the receipt.",
+      "what_to_do": [
+        "1. Open IQC for the batch named in the push.",
+        "2. Enter the parameter readings from the quality template (case 22).",
+        "3. Confirm the batch now has readings and the result is Accepted or Rejected.",
+        "4. Push that batch again."
+      ],
+      "pass_when": "The push goes through without the sampling_qty sentence.",
+      "escalate_when": "Readings are saved on the batch and ERP still returns sampling_qty must be greater than zero. Note the PR and the batch ID. Do not keep pushing it."
+    },
+    {
+      "case_number": 40,
+      "case_id": "40",
+      "section": "ERP push",
+      "title": "Batch already booked",
+      "screen": "ERP Data Sync",
+      "page": 25,
+      "exact_messages": [
+        "batch already booked"
+      ],
+      "scenario": "A receipt has several batches. Some are accepted by ERP. One is refused. The user pushes the whole receipt again. ERP says the accepted ones are already booked, and DigiTrail still looks unpushed.",
+      "what_you_see": "The push returns batch already booked for batches that were accepted a moment ago. The PR may still say Ready to Push.",
+      "what_it_means": "Already booked means ERP has that batch. The batch that still needs a correction is the one whose message is different, usually case 39. When every message on a retry is already booked, those batches are in ERP.",
+      "what_to_do": [
+        "1. Read each batch line in the error, not only the first.",
+        "2. Leave the already-booked batches alone.",
+        "3. Correct the batch that has a different error, then push.",
+        "4. Refresh ERP Data Sync. Booked batches should show as sent."
+      ],
+      "pass_when": "Each batch is either booked in ERP or corrected and then accepted. The PR is not left Ready to Push once every batch is booked.",
+      "escalate_when": "After a refresh, batches ERP already booked still show as unsent, so a new push would send them again. Note the PR and each batch ID, and stop pushing."
+    },
+    {
+      "case_number": 41,
+      "case_id": "41",
+      "section": "ERP push",
+      "title": "The part number is missing on the ERP line",
+      "screen": "ERP Data Sync",
+      "page": 26,
+      "exact_messages": [
+        "Part number blank on the ERP line"
+      ],
+      "scenario": "The ERP line does not say which manufacturer part was inwarded.",
+      "what_you_see": "The sync row has the PR and the lot, and the part number cell is empty.",
+      "what_it_means": "The part number is part of the line that will be pushed. A blank cell means the reel was stored without a manufacturer part, or the sync view is not reading the field that Parts In saved.",
+      "what_to_do": [
+        "1. Open the reel from Parts In and read the part number there.",
+        "2. If it is filled on the reel and blank on ERP Data Sync, refresh the sync once.",
+        "3. If it is blank on the reel, the capture never stored it. Complete case 04 or case 06 for that reel before any push.",
+        "4. Push only when the part number is visible on the sync row."
+      ],
+      "pass_when": "The sync row shows the same part number as the reel label.",
+      "escalate_when": "The reel has a part number and the sync row is blank after a refresh. Note the Kaynes Unique ID. Do not push."
+    },
+    {
+      "case_number": 42,
+      "case_id": "42",
+      "section": "ERP push",
+      "title": "The receipt quantity changed, and the invoice did not follow",
+      "screen": "Invoice summary, ERP fetch",
+      "page": 26,
+      "exact_messages": [
+        "Receipt quantity edited, inward quantity went to 0"
+      ],
+      "scenario": "Planning edits the receipt after some reels are already labelled. The floor needs the new total without losing the reels.",
+      "what_you_see": "ERP was changed from 29,000 to 30,000. The invoice still shows 29,000, or the inward quantity drops to 0.",
+      "what_it_means": "A fresh fetch brings the new receipt quantity onto the invoice. The inward quantity is the sum of reels DigiTrail has created. It stays. If the new receipt quantity is smaller than the quantity already labelled, stop.",
+      "what_to_do": [
+        "1. Fetch the receipt once.",
+        "2. Read receipt quantity and inward quantity as two numbers.",
+        "3. Receipt quantity should now match ERP. Inward quantity should still match the reels already printed.",
+        "4. Print further reels only up to the new receipt quantity."
+      ],
+      "pass_when": "Receipt quantity matches the edited ERP value, and previously printed reels are still counted.",
+      "escalate_when": "Inward quantity fell to 0, or the receipt quantity will not change after a completed fetch. Note both numbers and the PR."
+    },
+    {
+      "case_number": 43,
+      "case_id": "43",
+      "section": "Existing stock",
+      "title": "The legacy sticker does not fill the PR and the item code",
+      "screen": "Existing stock clearance, step 1",
+      "page": 27,
+      "exact_messages": [
+        "Legacy sticker does not fill PR and item code"
+      ],
+      "scenario": "The operator scans the old Kaynes sticker with the hand scanner or the camera. Step 2 cannot start.",
+      "what_you_see": "The scan returns an error, or the PR and item code boxes stay empty.",
+      "what_it_means": "Step 1 reads the legacy QR, not the manufacturer label. The PR and the item code are taken from that sticker. A picture of the manufacturer label, or a QR that is cut off, leaves the boxes empty.",
+      "what_to_do": [
+        "1. Scan the legacy sticker, not the manufacturer label.",
+        "2. Use the hand scanner or the on-screen camera. Capture, and wait until the picture shows the QR sharp.",
+        "3. Confirm the screen fills PR and item code from that sticker before anyone opens a template.",
+        "4. If the boxes stay empty, read the QR into a note once. You should see the PR and the item code in that text."
+      ],
+      "pass_when": "PR and item code are on the screen, and they match the legacy sticker.",
+      "escalate_when": "The QR text contains the PR and the item code, and the screen leaves both boxes empty. Keep the raw text."
+    },
+    {
+      "case_number": 44,
+      "case_id": "44",
+      "section": "Existing stock",
+      "title": "Making a template sends the operator back to step 1",
+      "screen": "Existing stock clearance",
+      "page": 27,
+      "exact_messages": [
+        "Template creation sends you back to step 1"
+      ],
+      "scenario": "The operator leaves the clearance page, builds the template, and the clearance page has forgotten the legacy sticker.",
+      "what_you_see": "Step 2 says create a template. After the template is saved, the PR scan has to be done again.",
+      "what_it_means": "The legacy sticker is the identity of the job. It should stay put while the template is created, and the operator should land back on step 2 for that same PR and item. The back arrow is for a different sticker.",
+      "what_to_do": [
+        "1. Finish step 1 and note the PR on the screen.",
+        "2. Create or map the template.",
+        "3. Return to the clearance page. The same PR and item should still be there, on step 2.",
+        "4. Use the back arrow only when you intend to scan a different legacy sticker."
+      ],
+      "pass_when": "You are on step 2 for the same PR, without a second scan.",
+      "escalate_when": "Returning from the template always clears the PR. Note the PR, scan it once more so the floor can continue, and report the reset."
+    },
+    {
+      "case_number": 45,
+      "case_id": "45",
+      "section": "Existing stock",
+      "title": "The camera goes blank after every scan",
+      "screen": "Existing stock clearance, step 2",
+      "page": 28,
+      "exact_messages": [
+        "Camera goes blank after each clearance scan"
+      ],
+      "scenario": "The operator has many reels on one legacy PR and must restart the camera every time.",
+      "what_you_see": "Each manufacturer label is captured, and the live camera drops to a black frame.",
+      "what_it_means": "Step 2 repeats the Parts In capture for every reel of this one PR and item. The camera stays live between reels. The legacy sticker does not change. The count after $$ increases.",
+      "what_to_do": [
+        "1. Capture the manufacturer label.",
+        "2. Confirm the extracted part, lot, and date in the same way as Parts In.",
+        "3. The camera should show the live picture again for the next reel of this same PR.",
+        "4. If it is black, reopen the camera once on this page. Do not rescan the legacy sticker unless you meant to change PR."
+      ],
+      "pass_when": "Two reels in a row are captured from a live picture, and the second reel's ID count is one higher.",
+      "escalate_when": "The camera is black before every reel, including straight after you reopen it. Note the PR."
+    },
+    {
+      "case_number": 46,
+      "case_id": "46",
+      "section": "Existing stock",
+      "title": "Audit or binning does not open for the cleared reels",
+      "screen": "Existing stock clearance, audit, binning",
+      "page": 28,
+      "exact_messages": [
+        "Cleared reels have no audit or binning row"
+      ],
+      "scenario": "The clearance page printed labels. The rest of DigiTrail does not see those reels.",
+      "what_you_see": "Reels were created from the legacy PR, and audit and binning have no rows for them.",
+      "what_it_means": "Cleared reels join the same audit and store path as any other reel. The ID root is the legacy batch, kept as-is, with $$ and an increasing count for each further reel. One legacy scan covers the whole PR and item.",
+      "what_to_do": [
+        "1. Read the printed ID. It should start with the legacy batch and end with $$ and a count.",
+        "2. The next reel of the same PR should increase that count by one.",
+        "3. Open audit and search that ID.",
+        "4. After audit, open binning for that PR only. You should see this PR's spools."
+      ],
+      "pass_when": "The reel is auditable and binnable under the printed ID, and the count increases once per reel.",
+      "escalate_when": "The label printed and neither audit nor binning can find the ID. Note the legacy batch and the printed ID."
+    },
+    {
+      "case_number": 47,
+      "case_id": "47",
+      "section": "Sign-in and the PC",
+      "title": "Cannot sign in, because the address cannot be read",
+      "screen": "Sign-in",
+      "page": 29,
+      "exact_messages": [
+        "Failed to parse URL",
+        "Authentication Error. Failed to parse URL."
+      ],
+      "scenario": "The sign-in page shows an authentication error before the password is checked.",
+      "what_you_see": "Authentication Error. Failed to parse URL. The address in the message contains a space, for example after http://.",
+      "what_it_means": "The PC is calling a broken address. A space after http:// means the host was saved with a space in it. No password will pass, because the request never leaves as a valid address.",
+      "what_to_do": [
+        "1. Read the address in the error. Look for a space, a missing digit, or a doubled slash.",
+        "2. Call IT with that address. The host has to be the machine's address with no space.",
+        "3. After it is saved, open DigiTrail again and sign in once."
+      ],
+      "pass_when": "The sign-in page accepts the username and password and opens the home screen.",
+      "escalate_when": "The address in the error has no space and sign-in still fails for every user. Note the time."
+    },
+    {
+      "case_number": 48,
+      "case_id": "48",
+      "section": "Sign-in and the PC",
+      "title": "Image verification is not available",
+      "screen": "Parts In, Reel Audit",
+      "page": 29,
+      "exact_messages": [
+        "Image verification isn't available right now"
+      ],
+      "scenario": "Capture or audit stops before it reads the picture. Every reel fails the same way.",
+      "what_you_see": "Image verification isn't available right now. Please try again, or contact your administrator.",
+      "what_it_means": "The picture is checked by the image service. This message means that service is not answering. Recapturing the same reel will not start it. One retry is fair. A second identical message is an IT call.",
+      "what_to_do": [
+        "1. Retry the capture once.",
+        "2. If the same sentence returns, stop the captures.",
+        "3. Tell IT the time and the PC.",
+        "4. When they confirm it is back, capture one reel and read the fields before the line restarts."
+      ],
+      "pass_when": "One reel captures and the fields fill, with this message gone.",
+      "escalate_when": "IT has confirmed the service is up and the message remains. Note the PC name."
+    },
+    {
+      "case_number": 49,
+      "case_id": "49",
+      "section": "Sign-in and the PC",
+      "title": "The page will not open",
+      "screen": "Any screen",
+      "page": 30,
+      "exact_messages": [
+        "Navigation Error or 404 Page Not Found",
+        "Navigation Error",
+        "404 Page Not Found"
+      ],
+      "scenario": "A menu item opens an error page. A startCamera error on existing-stock step 2 is this case.",
+      "what_you_see": "Navigation Error, or 404 Page Not Found, with Try Again, Go to Home, and Go Back.",
+      "what_it_means": "The screen crashed while it was opening, or the address does not exist. Try Again reloads that screen. A 404 means the link itself is wrong.",
+      "what_to_do": [
+        "1. Click Try Again once.",
+        "2. If the same error returns, go Home and open the screen from the menu, not from an old bookmark.",
+        "3. If it is 404, use the menu entry for that job.",
+        "4. If Try Again fails twice, note the error sentence and the menu name you clicked."
+      ],
+      "pass_when": "The screen opens from the menu and the camera or the list is usable.",
+      "escalate_when": "The same sentence returns after two tries from the menu. Send the sentence and the time."
+    },
+    {
+      "case_number": 50,
+      "case_id": "50",
+      "section": "Sign-in and the PC",
+      "title": "Master Data fetch leaves yesterday's rows behind",
+      "screen": "Master Data",
+      "page": 30,
+      "exact_messages": [
+        "Master Data fetch did not replace the rows"
+      ],
+      "scenario": "Fetch was expected to make DigiTrail match ERP, and the table is a mixture.",
+      "what_you_see": "After Fetch, old parts are still there, or the new ERP parts did not replace them.",
+      "what_it_means": "Fetch is a replace. It clears the master rows it owns and writes the download. A fetch that is closed halfway leaves a mixture.",
+      "what_to_do": [
+        "1. Start Fetch and wait until it says it has finished.",
+        "2. Search for a part you know ERP added, and for a part you know ERP removed.",
+        "3. The added part should be present. The removed part should be gone.",
+        "4. Then retry the reel that failed case 03."
+      ],
+      "pass_when": "The table matches the ERP download you just fetched.",
+      "escalate_when": "A finished fetch still shows a part ERP has removed, or hides a part ERP is sending for this company. Note both part numbers."
+    },
+    {
+      "case_number": 51,
+      "case_id": "51",
+      "section": "Sign-in and the PC",
+      "title": "The table stops at 10 or 20 rows",
+      "screen": "Any list: audits, store, ERP sync, master",
+      "page": 31,
+      "exact_messages": [
+        "The list stops at 10 or 20 rows"
+      ],
+      "scenario": "A PR with more reels than the page size looks incomplete.",
+      "what_you_see": "The footer offers 10, 20, 30 and there is no way to reach later rows. The operator thinks the missing reels were never created.",
+      "what_it_means": "The list is paged. The next page holds the rest. Changing the page size shows more rows on this page. It does not change the data.",
+      "what_to_do": [
+        "1. Read the page control. Go to the next page, or raise the page size.",
+        "2. Search by PR or by Kaynes Unique ID.",
+        "3. Count the rows across all pages before you decide a reel is missing."
+      ],
+      "pass_when": "The reel is found on some page, or by search.",
+      "escalate_when": "Search by the printed ID finds no row on any page, while Parts In shows that ID. Use the case for that screen, not this one."
+    },
+    {
+      "case_number": 52,
+      "case_id": "52",
+      "section": "Sign-in and the PC",
+      "title": "The home page opens on the wrong address",
+      "screen": "Browser, after install on a new PC",
+      "page": 31,
+      "exact_messages": [
+        "A new PC opens the wrong address"
+      ],
+      "scenario": "A new floor PC was pointed at the wrong host, or at a page that is not the application.",
+      "what_you_see": "404 Page Not Found, or the sign-in address points at a PC that is not the DigiTrail host.",
+      "what_it_means": "DigiTrail is the host address plus the application port the site was given. The menu inside a successful sign-in is the map. Roles then hide the pages that person does not use, including existing-stock clearance.",
+      "what_to_do": [
+        "1. Open the host address written down for this site. Do not add a space.",
+        "2. Sign in.",
+        "3. Use the menu. If a page you need is missing, ask for the role, not for a new address.",
+        "4. Existing-stock clearance is a role page. It is not supposed to appear for every user."
+      ],
+      "pass_when": "Sign-in opens the home page, and the menu shows the jobs this role is allowed to do.",
+      "escalate_when": "The address provided still returns 404. Send the full address from the browser bar."
+    }
+  ]
+}
